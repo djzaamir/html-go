@@ -17,44 +17,53 @@ const success = (succ) => {
 //Make sure user provided file generation schema is correct, before actually generating files
 //resolvePath function not correct, does not return incase of faulty path
 //Apply DRY and add js style object structure for functions maybe!
+//Extract project structure conf file into its own structure
+//Improve formatting of output in console everything is unorganized
 
 //File and Folder Structure
 const projectStructureTemplate = [
   {
-    "js": {
-      "type": "folder",
-      "items": [
+    js: {
+      type: "folder",
+      items: [
         {
           "app.js": {
-            "type": "file",
+            type: "file",
           },
         },
       ],
     },
   },
   {
-    "css": {
-      "type": "folder",
-      "items": [
+    css: {
+      type: "folder",
+      items: [
         {
           "styles.css": {
-            "type": "file",
+            type: "file",
           },
         },
-        {
-            "abc.css": {
-              "type": "file",
-            },
-        }
       ],
     },
   },
   {
     "index.html": {
-      "type": "file",
+      type: "file",
     },
   },
 ];
+
+function creationCallback(e, artifact, artifactName, targetPath) {
+  if (e) {
+    if (e.code == "EEXIST") {
+      info(`${artifact} already exists -> "${artifactName}" in ${targetPath}`);
+    } else {
+      error(`Unable to create ${artifact} -> "${artifactName}" in ${targetPath}`);
+    }
+  } else {
+    success(`Created ${artifact} -> "${artifactName}" in ${targetPath}`);
+  }
+}
 
 function createProjectStructureRecursively(targetPath, itemArray) {
   itemArray.forEach((item) => {
@@ -65,38 +74,21 @@ function createProjectStructureRecursively(targetPath, itemArray) {
 
     if (artifactObject["type"] == "folder") {
       fs.mkdir(fullyQualifiedPath, (e) => {
-        if (e) {
-          if (e.code == "EEXIST") {
-            info(`Folder already exist : "${artifactName}" in ${targetPath}`);
-          } else {
-            error(
-              `Unable to create folder :  "${artifactName}" in ${targetPath}`
-            );
-          }
-        } else {
-          success(`Created folder : "${artifactName}" in ${targetPath}`);
-        }
+        creationCallback(e, "folder" , artifactName , targetPath);
       });
     } else {
       //its a file
-      fs.writeFile(fullyQualifiedPath, "",{flag : "wx"}, (e) => {
-        if (e) {
-          if (e.code == "EEXIST") {
-            info(`File already exist : "${artifactName}" in ${targetPath}`);
-          } else {
-            error(
-              `Unable to create file :  "${artifactName}" in ${targetPath}`
-            );
-          }
-        } else {
-          success(`Created file : "${artifactName}" in ${targetPath}`);
-        }
+      fs.writeFile(fullyQualifiedPath, "", { flag: "wx" }, (e) => {
+        creationCallback(e, "file" , artifactName , targetPath);
       });
     }
 
     //if object contains items, then recursively create them as well
-    if(Object.keys(artifactObject).indexOf("items") > -1){
-        createProjectStructureRecursively(fullyQualifiedPath , artifactObject["items"]);
+    if (Object.keys(artifactObject).indexOf("items") > -1) {
+      createProjectStructureRecursively(
+        fullyQualifiedPath,
+        artifactObject["items"]
+      );
     }
   });
 }
