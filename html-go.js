@@ -16,36 +16,42 @@ const success = (succ) => {
 //TODO
 //Make sure user provided file generation schema is correct, before actually generating files
 //resolvePath function not correct, does not return incase of faulty path
+//Apply DRY and add js style object structure for functions maybe!
 
 //File and Folder Structure
 const projectStructureTemplate = [
   {
-    js: {
-      type: "folder",
-      items: [
+    "js": {
+      "type": "folder",
+      "items": [
         {
           "app.js": {
-            type: "file",
+            "type": "file",
           },
         },
       ],
     },
   },
   {
-    css: {
-      type: "folder",
-      items: [
+    "css": {
+      "type": "folder",
+      "items": [
         {
           "styles.css": {
-            type: "file",
+            "type": "file",
           },
         },
+        {
+            "abc.css": {
+              "type": "file",
+            },
+        }
       ],
     },
   },
   {
     "index.html": {
-      type: "file",
+      "type": "file",
     },
   },
 ];
