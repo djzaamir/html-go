@@ -14,6 +14,12 @@ const success = (succ) => {
 };
 
 //TODO
+
+//Instead of creating a structure from scratch
+//Move a ready-made project structure with base code in it from a known location
+//And allow user via command line to edit this template
+//Because the current structure looks very convoluted
+
 //Make sure user provided file generation schema is correct, before actually generating files
 //resolvePath function not correct, does not return incase of faulty path
 //Apply DRY and add js style object structure for functions maybe!
