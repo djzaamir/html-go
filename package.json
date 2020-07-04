@@ -1,12 +1,18 @@
 {
   "name": "html-go",
   "version": "1.0.0",
-  "description": "",
+  "description": "A quick and simple {HTML, Javascript, CSS} template generator",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "scripts": {},
+  "keywords": [
+    "html",
+    "template",
+    "html template",
+    "vanilla"
+  ],
+  "author": "Aamir",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0"
+  }
 }
