@@ -1,7 +1,9 @@
-const fs = require("fs");
+const fs = require("fs-extra");
 const chalk = require("chalk");
 const path = require("path");
 
+
+//Chalk helper methods
 const log = console.log;
 const error = (err) => {
   log(chalk.white.bgRed.bold(err));
@@ -11,6 +13,7 @@ const info = (inf) => {
 };
 const success = (succ) => {
   log(chalk.white.bgGreen.bold(succ));
+  fs.cop
 };
 
 //TODO
@@ -21,88 +24,9 @@ const success = (succ) => {
 //Because the current structure looks very convoluted
 
 //Make sure user provided file generation schema is correct, before actually generating files
-//resolvePath function not correct, does not return incase of faulty path
 //Apply DRY and add js style object structure for functions maybe!
-//Extract project structure conf file into its own structure
 //Improve formatting of output in console everything is unorganized
 
-//File and Folder Structure
-const projectStructureTemplate = [
-  {
-    js: {
-      type: "folder",
-      items: [
-        {
-          "app.js": {
-            type: "file",
-          },
-        },
-      ],
-    },
-  },
-  {
-    css: {
-      type: "folder",
-      items: [
-        {
-          "styles.css": {
-            type: "file",
-          },
-        },
-      ],
-    },
-  },
-  {
-    "index.html": {
-      type: "file",
-    },
-  },
-];
-
-function creationCallback(e, artifact, artifactName, targetPath) {
-  if (e) {
-    if (e.code == "EEXIST") {
-      info(`${artifact} already exists -> "${artifactName}" in ${targetPath}`);
-    } else {
-      error(`Unable to create ${artifact} -> "${artifactName}" in ${targetPath}`);
-    }
-  } else {
-    success(`Created ${artifact} -> "${artifactName}" in ${targetPath}`);
-  }
-}
-
-function createProjectStructureRecursively(targetPath, itemArray) {
-  itemArray.forEach((item) => {
-    //Extract the configuration structure against file || folder
-    const artifactName = Object.keys(item)[0]; //File || folder name
-    const artifactObject = item[artifactName];
-    let fullyQualifiedPath = path.join(targetPath, artifactName);
-
-    if (artifactObject["type"] == "folder") {
-      fs.mkdir(fullyQualifiedPath, (e) => {
-        creationCallback(e, "folder" , artifactName , targetPath);
-      });
-    } else {
-      //its a file
-      fs.writeFile(fullyQualifiedPath, "", { flag: "wx" }, (e) => {
-        creationCallback(e, "file" , artifactName , targetPath);
-      });
-    }
-
-    //if object contains items, then recursively create them as well
-    if (Object.keys(artifactObject).indexOf("items") > -1) {
-      createProjectStructureRecursively(
-        fullyQualifiedPath,
-        artifactObject["items"]
-      );
-    }
-  });
-}
-
-//Wrapper Function for the main recursive function
-function createProjectStructure(targetPath) {
-  createProjectStructureRecursively(targetPath, projectStructureTemplate);
-}
 
 //Will Resolve Path for creating project structure, as well as validate its existence
 function resolvePath(targetPath) {
